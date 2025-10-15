@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ponto Seguro — Painel Digital</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet CSS e JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <style>
+        .conteudo {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .conteudo.ativo {
+            display: block;
+            opacity: 1;
+        }
+        
+        nav a.ativo {
+            color: #38bdf8;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        #map {
+            height: 400px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="logo">🛡 Ponto Seguro</h1>
+        <nav>
+            <ul>
+                <li><a href="#" data-section="inicio" class="ativo">Início</a></li>
+                <li><a href="#" data-section="mapa">Mapa</a></li>
+                <li><a href="#" data-section="estatisticas">Estatísticas</a></li>
+                <li><a href="#" data-section="anunciantes">Anunciantes</a></li>
+                <li><a href="#" data-section="sobre">Sobre</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="conteudo" class="container">
+        <!-- INÍCIO -->
+        <section id="inicio" class="conteudo ativo">
+            <h2>🛡 Bem-vindo ao Ponto Seguro</h2>
+            <p>
+                O <strong>Ponto Seguro</strong> é uma plataforma inovadora que integra
+                <strong>tecnologia, segurança pública</strong> e <strong>comunicação urbana</strong>.
+            </p>
+
+            <p>
+                Nosso sistema conecta painéis digitais em locais estratégicos da cidade, oferecendo informações em tempo real, estatísticas de segurança e oportunidades para anunciantes.
+            </p>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>📍 Mapa Interativo</h3>
+                    <p>Visualize pontos de monitoramento e status de segurança em tempo real.</p>
+                </div>
+                <div class="card">
+                    <h3>📊 Estatísticas</h3>
+                    <p>Acompanhe dados de ocorrências e alertas registrados em diferentes regiões.</p>
+                </div>
+                <div class="card">
+                    <h3>📢 Anúncios Inteligentes</h3>
+                    <p>Espaço para empresas se conectarem com o público de forma moderna e dinâmica.</p>
+                </div>
+                <div class="card">
+                    <h3>🤝 Parcerias</h3>
+                    <p>Trabalhamos junto com órgãos públicos e empresas privadas para tornar a cidade mais segura.</p>
+                </div>
+            </div>
+
+            <div class="alerta-nivel verde">
+                ✅ Sistema Operando Normalmente — Nenhum alerta ativo no momento.
+            </div>
+
+            <div class="clima-box">
+                <h3>🌤 Clima Atual em Fortaleza</h3>
+                <p id="climaStatus">Carregando clima...</p>
+            </div>
+
+            <div class="contatos">
+                <h3>📞 Contatos de Emergência</h3>
+                <ul>
+                    <li>🚔 <strong>Polícia Militar:</strong> 190</li>
+                    <li>🚓 <strong>Polícia Civil:</strong> 197</li>
+                    <li>🚑 <strong>SAMU:</strong> 192</li>
+                    <li>🚒 <strong>Bombeiros:</strong> 193</li>
+                    <li>🌊 <strong>Defesa Civil:</strong> 199</li>
+                    <li>🚨 <strong>Disque Denúncia:</strong> 181</li>
+                    <li>💊 <strong>CVV (Ajuda Emocional):</strong> 188</li>
+                </ul>
+            </div>
+
+            <div class="status-geral">
+                <p><strong>Última atualização:</strong> <span id="dataAtual"></span></p>
+                <p><strong>Localização:</strong> Fortaleza, CE</p>
+            </div>
+
+            <div class="acoes">
+                <a href="#" data-section="estatisticas" class="botao-acao">📈 Ver Estatísticas ao Vivo</a>
+            </div>
+        </section>
+
+        <!-- MAPA -->
+        <section id="mapa" class="conteudo">
+            <h2>🗺 Mapa em Tempo Real</h2>
+            <div id="map"></div>
+        </section>
+
+
+        <!-- ESTATÍSTICAS -->
+        <section id="estatisticas" class="conteudo">
+            <h2>📊 Estatísticas de Segurança</h2>
+            <canvas id="grafico1" width="400" height="200"></canvas>
+        </section>
+
+        <!-- ANUNCIANTES -->
+        <section id="anunciantes" class="conteudo">
+            <h2>💼 Espaço para Anunciantes</h2>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
+                <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?auto=format&fit=crop&w=600&q=80" alt="Parceria entre governo e polícia" style="flex:1 1 300px;max-width:400px;border-radius:10px;display:block;object-fit:cover;">
+                <img src="painel-ponto-seguro.jpg.png" alt="Painel Digital Ponto Seguro" style="flex:1 1 300px;max-width:400px;border-radius:10px;display:block;object-fit:cover;">
+            </div>
+            <p>
+                Este projeto é uma <strong>parceria público-privada</strong> entre empresas e o governo, contando com uma equipe especializada que monitora as câmeras em tempo real. Caso seja detectada alguma situação suspeita ou perigosa, a equipe pode acionar imediatamente a polícia ou órgãos de segurança.
+            </p>
+            <p>
+                Empresas podem exibir campanhas e anúncios nos painéis digitais, contribuindo para a segurança urbana e o bem-estar da população.
+            </p>
+            <div class="anuncio">
+                <img src="anuncio1.png" class="ativo">
+                <img src="anuncio2.png">
+                <img src="anuncio3.png">
+            </div>
+        </section>
+
+        <!-- SOBRE -->
+        <section id="sobre" class="conteudo">
+            <h2>ℹ Sobre o Projeto</h2>
+            <p>O <strong>Ponto Seguro</strong> é um sistema de painéis digitais urbanos com botões de alerta e integração com serviços de segurança.</p>
+            <div class="equipe">
+                <div class="membro">
+                    <h4>Cauã Sousa</h4>
+                    <p>Desenvolvedor e idealizador do projeto.</p>
+                    <div style="margin-top:18px;">
+                        <strong>Participantes:</strong>
+                        <ul style="list-style:none;padding:0;margin:8px 0 0 0;">
+                            <li>ANA VICTORIA</li>
+                            <li>ARTHUR ROSARIO</li>
+                            <li>BEATRIZ TAINAN</li>
+                            <li>ESTELA SANTOS</li>
+                            <li>EVELYN VICTÓRIA</li>
+                            <li>FRANCIELE SOUZA</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p id="relogio">🕒 Atualizando hora...</p>
+        <p id="statusConexao" class="status">🟢 Conectado</p>
+    </footer>
+
+    <script>
+        // --- MENU INTERATIVO ---
+        const links = document.querySelectorAll("nav a");
+        const secoes = document.querySelectorAll("main section");
+
+        links.forEach(link => {
+            link.addEventListener("click", e => {
+                e.preventDefault();
+                const alvo = link.getAttribute("data-section");
+                links.forEach(l => l.classList.remove("ativo"));
+                secoes.forEach(sec => sec.classList.remove("ativo"));
+                link.classList.add("ativo");
+                document.getElementById(alvo).classList.add("ativo");
+                // Inicializa o mapa se for a aba 'Mapa'
+                if (alvo === "mapa") {
+                    setTimeout(inicializarMapaLeaflet, 100);
+                }
+            });
+        });
+
+        // --- RELÓGIO ---
+        function atualizarHora() {
+            const agora = new Date();
+            document.getElementById("relogio").textContent = "🕒 " + agora.toLocaleTimeString("pt-BR");
+        }
+        setInterval(atualizarHora, 1000);
+        atualizarHora();
+
+        // --- STATUS CONEXÃO ---
+        window.addEventListener("offline", () => {
+            document.getElementById("statusConexao").textContent = "🔴 Sem conexão";
+        });
+        window.addEventListener("online", () => {
+            document.getElementById("statusConexao").textContent = "🟢 Conectado";
+        });
+
+        // --- GRÁFICO ---
+        const ctx = document.getElementById('grafico1');
+        if (ctx) {
+            // Mesmos dados dos pontos do mapa
+            const totalVerde = 5; // pontosSeguros
+            const totalVermelho = 6; // pontosPerigosos
+            const total = totalVerde + totalVermelho;
+            const percVerde = Math.round((totalVerde / total) * 100);
+            const percVermelho = Math.round((totalVermelho / total) * 100);
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        `Pontos seguros (${percVerde}%)`,
+                        `Pontos perigosos (${percVermelho}%)`
+                    ],
+                    datasets: [{
+                        data: [totalVerde, totalVermelho],
+                        backgroundColor: [
+                            '#22c55e', // verde
+                            '#ef4444'  // vermelho
+                        ]
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- DATA ATUAL ---
+        const data = new Date();
+        document.getElementById("dataAtual").textContent = data.toLocaleDateString("pt-BR", {
+            weekday: "long",
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+
+        // --- CLIMA ---
+        async function carregarClima() {
+            const climaStatus = document.getElementById("climaStatus");
+            try {
+                const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-3.71722&longitude=-38.5433&current=temperature_2m,weathercode");
+                const j = await r.json();
+                const temp = j.current.temperature_2m;
+                const cod = j.current.weathercode;
+                const desc = {
+                    0: "Céu limpo ☀",
+                    1: "Parcialmente nublado 🌤",
+                    2: "Nublado ☁",
+                    3: "Encoberto ☁",
+                    45: "Nevoeiro 🌫",
+                    61: "Chuva leve 🌧",
+                    80: "Pancadas de chuva ⛈"
+                }[cod] || "Tempo indefinido";
+                climaStatus.textContent = `${desc} — ${temp}°C`;
+            } catch {
+                climaStatus.textContent = "Não foi possível carregar o clima 😕";
+            }
+        }
+        carregarClima();
+
+        // --- MAPA ---
+        // Inicializa o mapa Leaflet apenas quando a aba 'Mapa' for ativada
+        let mapaLeaflet = null;
+        function inicializarMapaLeaflet() {
+            const mapDiv = document.getElementById('map');
+            if (!mapDiv) return;
+            mapDiv.innerHTML = "";
+            mapaLeaflet = L.map('map').setView([-14.2350, -51.9253], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(mapaLeaflet);
+            // Ícones personalizados
+            const iconeVerde = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+            const iconeVermelho = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+            // Pontos seguros (verdes)
+            const pontosSeguros = [
+                { nome: "Brasília", lat: -15.7939, lon: -47.8828 },
+                { nome: "Curitiba", lat: -25.4284, lon: -49.2733 },
+                { nome: "Porto Alegre", lat: -30.0346, lon: -51.2177 },
+                { nome: "Belo Horizonte", lat: -19.9167, lon: -43.9345 },
+                { nome: "Salvador", lat: -12.9777, lon: -38.5016 }
+            ];
+            pontosSeguros.forEach(p => {
+                L.marker([p.lat, p.lon], { icon: iconeVerde }).addTo(mapaLeaflet)
+                    .bindPopup(`<strong>${p.nome}</strong><br>🟢 Ponto seguro.`);
+            });
+            // Pontos perigosos para mulheres (vermelhos)
+            const pontosPerigosos = [
+                { nome: "Fortaleza", lat: -3.7305, lon: -38.5218 },
+                { nome: "São Paulo", lat: -23.5505, lon: -46.6333 },
+                { nome: "Rio de Janeiro", lat: -22.9068, lon: -43.1729 },
+                { nome: "Manaus", lat: -3.1190, lon: -60.0217 },
+                { nome: "Belém", lat: -1.4558, lon: -48.4902 },
+                { nome: "Recife", lat: -8.0476, lon: -34.8770 }
+            ];
+            // Bairros com bons pontos de ônibus, mas não recomendados para mulheres
+            const bairrosNaoRecomendados = [
+                { nome: "Copacabana (RJ)", lat: -22.9711, lon: -43.1822 },
+                { nome: "Centro (SP)", lat: -23.5452, lon: -46.6337 },
+                { nome: "Praia de Iracema (Fortaleza)", lat: -3.7184, lon: -38.5172 },
+                { nome: "Savassi (BH)", lat: -19.9387, lon: -43.9332 },
+                { nome: "Boa Viagem (Recife)", lat: -8.1177, lon: -34.8941 }
+            ];
+            bairrosNaoRecomendados.forEach(b => {
+                L.marker([b.lat, b.lon], { icon: iconeVermelho }).addTo(mapaLeaflet)
+                    .bindPopup(`<strong>${b.nome}</strong><br>🔴 Bons pontos de ônibus, mas não são a melhor escolha para mulheres.`);
+            });
+            pontosPerigosos.forEach(p => {
+                L.marker([p.lat, p.lon], { icon: iconeVermelho }).addTo(mapaLeaflet)
+                    .bindPopup(`<strong>${p.nome}</strong><br>� Ponto perigoso para mulheres.`);
+            });
+            setTimeout(() => { mapaLeaflet.invalidateSize(); }, 200);
+        }
+
+        document.querySelector('[data-section="mapa"]').addEventListener('click', () => {
+            // Removido: já existe inicialização no menu interativo acima
+        });
+    </script>
+</body>
+
+</html>
